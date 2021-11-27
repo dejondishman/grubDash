@@ -22,7 +22,7 @@ const  dishExists = (req, res, next) => {
   const foundDish = dishes.find((dish) => dish.id === dishId);
   if(foundDish) {
       res.locals.dish = foundDish;
-      return next();
+      return
   }
   next({
       status: 404,
@@ -31,8 +31,9 @@ const  dishExists = (req, res, next) => {
 }
 
 const validName = (req, res, next) => {
-    if(name || name === "") {
-        return next();
+    const {name} = req.body.data;
+    if(name) {
+        return 
     }
     next({
         status:400,
@@ -56,14 +57,14 @@ const validDescription = (req,res,next) => {
   if (!description || description.length === 0) {
       return next({
           status: 400,
-          message: "Dish must include  Description"
+          message: "Dish must include description"
       })
 }
 };
 
-const noPriceProp = (req, res) => {
+const noPriceProp = (req, res, next) => {
     const{data: {price} = {} } = req.body;
-    if(!price) {
+     if (typeof price != "number" || price <= 0)  {
         return next({
             status: 400,
             message: "Dish must include a price"
@@ -74,17 +75,17 @@ const noPriceProp = (req, res) => {
 
 const validPrice = (req, res, next) => {
     const {data: {price} = {} } = req.body;
-    if (typeof price != "number" || dishPrice <= 0) {
+    if (typeof price != "number" || price <= 0) {
         return next({
-            staus: 400,
+            status: 400,
             message: "Dish must have a price that is an integer greater than 0"
         })
     }
 }
 
 const validImage = (req, res, next) => {
-  const {data: {price} = {} } = req.body;
-  if (!image || dishImage.length === 0) {
+  const {data: {image_url} = {} } = req.body;
+  if (!image_url) {
       return next({
           status:400, 
           message: "Dish must include an image_url"
@@ -93,9 +94,10 @@ const validImage = (req, res, next) => {
 }
 
 const validIds = (req, res, next) => {
-    const {data: {Id} = {} } = req.body;
+    const {data: {id} = {} } = req.body;
+    const {dishId} = req.params;
     if (id === dishId || !id) {
-        return next();
+        return 
     }
     next({
         status: 400,
