@@ -62,7 +62,7 @@ function validDescription(req,res,next){
 }
 };
 
-const noPriceProp(req, res, next){
+function noPriceProp(req, res, next){
     const{data: {price} = {} } = req.body;
      if (typeof price != "number" || price <= 0)  {
         return next({
