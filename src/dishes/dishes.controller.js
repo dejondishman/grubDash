@@ -17,7 +17,7 @@ function list(req,res) {
 
 //a middleWare function that check if the dish exist
 
-const  dishExists = (req, res, next) => {
+function dishExists(req, res, next){
   const {dishId} = req.params;
   const foundDish = dishes.find((dish) => dish.id === dishId);
   if(foundDish) {
@@ -30,7 +30,7 @@ const  dishExists = (req, res, next) => {
   });
 }
 
-const validName = (req, res, next) => {
+function validName(req, res, next){
     const {name} = req.body.data;
     if(name) {
         return 
@@ -52,7 +52,7 @@ const validName = (req, res, next) => {
 //     return next();
 //   }
 
-const validDescription = (req,res,next) => {
+function validDescription(req,res,next){
   const {data : { description } = {} } = req.body;
   if (!description || description.length === 0) {
       return next({
@@ -62,7 +62,7 @@ const validDescription = (req,res,next) => {
 }
 };
 
-const noPriceProp = (req, res, next) => {
+const noPriceProp(req, res, next){
     const{data: {price} = {} } = req.body;
      if (typeof price != "number" || price <= 0)  {
         return next({
@@ -73,7 +73,7 @@ const noPriceProp = (req, res, next) => {
 }
 
 
-const validPrice = (req, res, next) => {
+function validPrice(req, res, next){
     const {data: {price} = {} } = req.body;
     if (typeof price != "number" || price <= 0) {
         return next({
@@ -83,7 +83,7 @@ const validPrice = (req, res, next) => {
     }
 }
 
-const validImage = (req, res, next) => {
+function validImage(req, res, next){
   const {data: {image_url} = {} } = req.body;
   if (!image_url) {
       return next({
@@ -93,7 +93,7 @@ const validImage = (req, res, next) => {
   }
 }
 
-const validIds = (req, res, next) => {
+function validIds(req, res, next){
     const {data: {id} = {} } = req.body;
     const {dishId} = req.params;
     if (id === dishId || !id) {
@@ -105,7 +105,7 @@ const validIds = (req, res, next) => {
     })
 }
 
-const createValidation = (req, res, next) => {
+function createValidation(req, res, next){
     validName(req, res, next);
     validDescription(req, res, next);
     noPriceProp(req, res, next);
@@ -115,12 +115,12 @@ const createValidation = (req, res, next) => {
  };
  
 
- const readValidation = (req, res, next) => {
+ function readValidation(req, res, next){
     dishExists(req, res, next);
     next();
  };
 
- const updateValidation = (req, res, next) => {
+ function updateValidation(req, res, next){
     dishExists(req, res, next);
     validName(req, res, next);
     validDescription(req, res, next);
